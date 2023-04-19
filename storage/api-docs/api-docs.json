@@ -6,17 +6,218 @@
     },
     "servers": [
         {
-            "url": "http://megainsight.dsv/api"
+            "url": "150.230.81.216/api"
         }
     ],
     "paths": {
-        "http://megainsight.dsv/api/branchs": {
+        "/api/auth/register": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Create a new User",
+                "operationId": "c7bb21a0d87049e161b8e4c9b0d909f2",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "email",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "email"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "password"
+                        }
+                    },
+                    {
+                        "name": "password_confirmation",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "password"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "": {
+                                        "properties": {
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "email": {
+                                                "type": "email"
+                                            },
+                                            "password": {
+                                                "type": "password"
+                                            },
+                                            "password_confirmation": {
+                                                "type": "password"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "name": "José da Silva",
+                                    "email": "email@company.com",
+                                    "password": "1asda$ghf%$",
+                                    "password_confirmation": "1asda$ghf%$"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "name": {
+                                            "type": "string",
+                                            "example": "José da Silva"
+                                        },
+                                        "email": {
+                                            "type": "email",
+                                            "example": "mail@company.com"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "example": "2021-12-11T09:25:53.000000Z"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "example": "2021-12-11T09:25:53.000000Z"
+                                        },
+                                        "id": {
+                                            "type": "number",
+                                            "example": "1"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Content",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The email has already been taken."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/auth/login": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "User Login",
+                "description": "Login User Here",
+                "operationId": "authLogin",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "email"
+                                    },
+                                    "password": {
+                                        "type": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Login Successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "token": {
+                                            "type": "string",
+                                            "example": "6|bDbbUML7N6ZAf1WgNgmAgAVGjbicIkfoPVa9H52G"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Login Successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/branchs": {
             "get": {
                 "tags": [
                     "Branchs"
                 ],
                 "summary": "Lists the name of all Branches sorted alphabetically",
-                "operationId": "1fd6751af4c52d7ee3bb37e652c3eee1",
+                "operationId": "b16516fac4ebab98003b242853780b9f",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -45,13 +246,96 @@
                 }
             }
         },
-        "http://megainsight.dsv/api/branchs/{branch_id}": {
+        "/api/branch": {
+            "post": {
+                "tags": [
+                    "Branchs"
+                ],
+                "summary": "Create a new Branch",
+                "operationId": "f0043656650ce6459fdf80c46af1328d",
+                "parameters": [
+                    {
+                        "name": "no_branch",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "": {
+                                        "properties": {
+                                            "no_branch": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "no_branch": "ACME LTDA."
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "no_branch": {
+                                            "type": "string",
+                                            "example": "ACME LTDA"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "example": "2021-12-11T09:25:53.000000Z"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "example": "2021-12-11T09:25:53.000000Z"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Content",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The no branch has already been taken."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/branchs/{branch_id}": {
             "get": {
                 "tags": [
                     "Branchs"
                 ],
-                "summary": "Shows branch information.",
-                "operationId": "610dd0d65a32391c2a73581e44d6d43b",
+                "summary": "Shows branch information, searching by Id.",
+                "operationId": "660760fa9a781ac23357e3281973d45a",
                 "parameters": [
                     {
                         "name": "id",
@@ -110,13 +394,13 @@
                 }
             }
         },
-        "http://megainsight.dsv/api/branchname/{branch_name}": {
+        "/api/branchname/{branch_name}": {
             "get": {
                 "tags": [
                     "Branchs"
                 ],
-                "summary": "Shows branch information.",
-                "operationId": "3b60c5edc2a6079b128fd12f94f568a1",
+                "summary": "Shows branch information, searching by Name.",
+                "operationId": "e11aa8e1db806075f4463ecbddfb98a7",
                 "parameters": [
                     {
                         "name": "no_branch",
@@ -175,13 +459,13 @@
                 }
             }
         },
-        "http://megainsight.dsv/api/branchemployees/{branch_id}": {
+        "/api/branchemployees/{branch_id}": {
             "get": {
                 "tags": [
                     "Branchs"
                 ],
                 "summary": "Shows the information of a Branch and all Employees related to it..",
-                "operationId": "a972111a55ab53227955bf572d0da890",
+                "operationId": "bf4b7745775e5a3df7eea85376a3e6fc",
                 "parameters": [
                     {
                         "name": "no_branch",
@@ -273,13 +557,13 @@
                 }
             }
         },
-        "http://megainsight.dsv/api/employees": {
+        "/api/employees": {
             "get": {
                 "tags": [
                     "Employees"
                 ],
                 "summary": "Lists the name of all Employees sorted alphabetically",
-                "operationId": "db6a630b58da4fc86d9ecbcc7569e67a",
+                "operationId": "7fc06f144c1cd7925c5c391a6609f02d",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -298,6 +582,272 @@
                                                 },
                                                 "type": "object"
                                             }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/employee": {
+            "post": {
+                "tags": [
+                    "Employees"
+                ],
+                "summary": "Create a new Employee",
+                "operationId": "6a4f1e0943433f32bb808e136da78430",
+                "parameters": [
+                    {
+                        "name": "no_employee",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "branch_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "role_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "": {
+                                        "properties": {
+                                            "no_employee": {
+                                                "type": "string"
+                                            },
+                                            "branch_id": {
+                                                "type": "number"
+                                            },
+                                            "role_id": {
+                                                "type": "number"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "no_employee": "José da Silva",
+                                    "branch_id": "1",
+                                    "role_id": "1"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "no_employee": {
+                                            "type": "string",
+                                            "example": "José da Silva"
+                                        },
+                                        "branch_id": {
+                                            "type": "number",
+                                            "example": "1"
+                                        },
+                                        "role_id": {
+                                            "type": "number",
+                                            "example": "1"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "example": "2021-12-11T09:25:53.000000Z"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "example": "2021-12-11T09:25:53.000000Z"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Content",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The no employee has already been taken."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "428": {
+                        "description": "Precondition Required",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Role not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/employee/{employee_id}": {
+            "get": {
+                "tags": [
+                    "Employees"
+                ],
+                "summary": "Show employee information, searching by Id.",
+                "operationId": "47e8a23ec0c25505bd2fcda843ee8e8b",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "number",
+                                            "example": 1
+                                        },
+                                        "no_employee": {
+                                            "type": "string",
+                                            "example": "João Lopes"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "example": "2023-02-23T00:09:16.000000Z"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "example": "2023-02-23T12:33:45.000000Z"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "NOT FOUND",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Employee not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/employeename/{employee_name}": {
+            "get": {
+                "tags": [
+                    "Employees"
+                ],
+                "summary": "Show employee information, searching by name.",
+                "operationId": "02b12a7b6f7f4a609433667944294d26",
+                "parameters": [
+                    {
+                        "name": "no_employee",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "number",
+                                            "example": 1
+                                        },
+                                        "no_employee": {
+                                            "type": "string",
+                                            "example": "José Santos"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "example": "2023-02-23T00:09:16.000000Z"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "example": "2023-02-23T12:33:45.000000Z"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "NOT FOUND",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Branch not found"
                                         }
                                     },
                                     "type": "object"

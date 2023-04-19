@@ -13,7 +13,7 @@ use App\Models\Employee;
 *             version="1.0",
 * )
 *
-* @OA\Server(url="http://megainsight.dsv/api")
+* @OA\Server(url="150.230.81.216/api")
 */
 
 
@@ -22,7 +22,7 @@ class BranchController extends Controller
     /**
      * Lists the name of all Branches sorted alphabetically
      * @OA\Get (
-     *     path="http://megainsight.dsv/api/branchs",
+     *     path="/api/branchs",
      *     tags={"Branchs"},
      *     @OA\Response(
      *         response=200,
@@ -51,6 +51,49 @@ class BranchController extends Controller
         return response()->json($branches,200); 
     }
 
+    
+    
+    /**
+     * Create a new Branch
+     * @OA\Post(
+     *  path="/api/branch",
+     *  tags={"Branchs"},
+     *     @OA\Parameter(in="path",name="no_branch",required=true,@OA\Schema(type="string")),
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                      type="object",
+     *                      @OA\Property(
+     *                          property="no_branch",
+     *                          type="string"
+     *                      )
+     *                 ),
+     *                 example={
+     *                     "no_branch":"ACME LTDA.",
+     *                }
+     *             )
+     *         )
+     *      ),
+     *      @OA\Response(
+     *          response=201,
+     *          description="Created",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="no_branch", type="string", example="ACME LTDA"),
+     *              @OA\Property(property="updated_at", type="string", example="2021-12-11T09:25:53.000000Z"),
+     *              @OA\Property(property="created_at", type="string", example="2021-12-11T09:25:53.000000Z"),
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=422,
+     *          description="Unprocessable Content",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="message", type="string", example="The no branch has already been taken."),
+     *          )
+     *      ),
+     * )
+     */
 
     public function store(Request $request)
     {
@@ -76,10 +119,10 @@ class BranchController extends Controller
     }
 
 
-     /**
-     * Shows branch information.
+    /**
+     * Shows branch information, searching by Id.
      * @OA\Get (
-     *     path="http://megainsight.dsv/api/branchs/{branch_id}",
+     *     path="/api/branchs/{branch_id}",
      *     tags={"Branchs"},
      *     @OA\Parameter(
      *         in="path",
@@ -122,9 +165,9 @@ class BranchController extends Controller
 
 
     /**
-     * Shows branch information.
+     * Shows branch information, searching by Name.
      * @OA\Get (
-     *     path="http://megainsight.dsv/api/branchname/{branch_name}",
+     *     path="/api/branchname/{branch_name}",
      *     tags={"Branchs"},
      *     @OA\Parameter(
      *         in="path",
@@ -166,7 +209,7 @@ class BranchController extends Controller
     /**
     * Shows the information of a Branch and all Employees related to it..
     * @OA\Get (
-    *     path="http://megainsight.dsv/api/branchemployees/{branch_id}",
+    *     path="/api/branchemployees/{branch_id}",
     *     tags={"Branchs"},
     *     @OA\Parameter(
     *         in="path",
